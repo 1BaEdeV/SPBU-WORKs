@@ -3,56 +3,93 @@
 #include <queue>
 using namespace std;
 
-#define NIL 0
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// поиска увеличивающего пути через DFS
+bool dfs(vector<vector<int>>& graph, int u, vector<bool>& seen, vector<int>& matchR) {
+    int n = graph.size();
+    for (int v = 0; v < n; v++) {
+        if (graph[u][v] && !seen[v]) { // если вершина доступна и не посещена
+            seen[v] = true; // метим её как посещенную
+            if (matchR[v] < 0 || dfs(graph, matchR[v], seen, matchR)) { // если она незаметчена или можно найти увеличивающий путь
+                matchR[v] = u; //  то мэтчим вершину из второй доли с вершиной из первой
+                return true;
+            }
+        }
+    }
+    return false; //если, все плохо, то нет увеличивающего пути
+}
+
+//  нахождения максимального мэтчинга
+int dfsmaxMatch(vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> matchR(n, -1); // массив для хранения сопоставления
+    int result = 0; // счетчик пар мэтчинга
+    for (int u = 0; u < n; u++) { // перебираем вершины первой доли
+        vector<bool> seen(n, false); // массив посещенных вершин
+        if (dfs(graph, u, seen, matchR)) { // находим увеличивающий путь
+            result++; // увеличиваем счетчик пар мэтчинга
+        }
+    }
+    return result; // возвращаем количество пар мэтчинга
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// поиск ув пути через BFS
 bool bfs(vector<vector<int>>& graph, vector<int>& pair, vector<bool>& visited) {
-    int n = pair.size() - 1;
-    queue<int> q;
-    for (int u = 0; u <= n; u++) {
-        if (pair[u] == NIL) {
-            visited.assign(n + 1, false);
-            q.push(u);
-            visited[u] = true;
+    int n = pair.size();
+    queue<int> q; // инициализируем очередь
+    for (int u = 0; u < n; u++) {
+        if (pair[u] == 0) { // если вершина не сопоставлена
+            visited.assign(n , false); // обновляем список посещенных вершин
+            q.push(u); //добавляем в  очередь следующую незаметченную вершину
+            visited[u] = true; //значит посетили
         }
     }
 
-    while (!q.empty()) {
+    while (!q.empty()) { //пока всю чередь не исчерпаем
         int u = q.front();
         q.pop();
-        for (int v : graph[u]) {
-            if (pair[v] == NIL) {
-                pair[v] = u;
+        for (int v : graph[u]) { //пробегаемся по ребрам вершины
+            if (pair[v] == 0 ) {// если незаметчена то добавляем
+                pair[v] = u;   //мэтчим ее
                 return true;
-            } else if (!visited[pair[v]]) {
+            } else if (!visited[pair[v]] and graph[u][v]) { //если она непосещена и соединена с вершиной
                 visited[pair[v]] = true;
-                q.push(pair[v]);
+                q.push(pair[v]);//то ее тоже в очередь
             }
         }
     }
 
-    return false;
+    return false;//опять же если все плохо, то фолс
 }
-
-int maxMatching(vector<vector<int>>& graph) {
-    int n = graph.size() - 1;
-    vector<int> pair(n + 1, NIL);
-    int matching = 0;
-
-    for (int u = 1; u <= n; u++) {
-        vector<bool> visited(n + 1, false);
-        if (bfs(graph, pair, visited)) {
-            matching++;
+//нахождение максимального мэтчинга
+int bfsmaxMatch(vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> pair(n , 0);// вектор мэтчингой
+    int result = 0;// счетчик пар мэтчинга
+    for (int u = 0; u < n; u++) {
+        vector<bool> visited(n , false);// массив посещенных вершин
+        if (bfs(graph, pair, visited)) {// если нашли увеличивающую цепь
+            result++;// то+1
         }
     }
 
-    return matching;
+    return result;//возвращаем результат
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 int main() {
     // Пример двудольного графа
-    vector<vector<int>> graph = {{2,3}, {1, 4}, {3}, {3}};
+    vector<vector<int>> graph = {{0, 1, 1, 0},
+                                 {1, 0, 0, 1},
+                                 {0, 0, 1, 0},
+                                 {0, 0, 1, 0}};
 
-    int maxMatch = maxMatching(graph);
-    cout << "Максимальный размер пароса: " << maxMatch << endl;
+    int maxMatch = bfsmaxMatch(graph);
+    cout << "Максимальный размер мэтчинга: " << maxMatch << endl;
 
     return 0;
 }
