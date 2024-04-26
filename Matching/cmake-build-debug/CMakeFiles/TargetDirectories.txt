@@ -1,3 +1,0 @@
-/home/eduard/Рабочий стол/PM_proga/Matching/cmake-build-debug/CMakeFiles/Matching.dir
-/home/eduard/Рабочий стол/PM_proga/Matching/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/eduard/Рабочий стол/PM_proga/Matching/cmake-build-debug/CMakeFiles/rebuild_cache.dir
