@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-
+#include <climits>
 using namespace std;
 
 
@@ -26,7 +26,7 @@ bool dfs(vector<vector<int>>& expengraph, int u, int end, vector<int>& path, int
 
 int Ford_Falkerson(vector<vector<int>>& graph, int & start, int & end) {
 
-    int V = 5; // кол-во вершин в графе
+    int V = graph.size(); // кол-во вершин в графе
 
     vector<vector<int>> expengraph = graph;//копия графа, в котором будем изменять веса
     vector<int> path(V, -1);//путь между начало и концом
@@ -34,7 +34,7 @@ int Ford_Falkerson(vector<vector<int>>& graph, int & start, int & end) {
 
 
     while (dfs(expengraph, start, end, path, V)) {//пока существует хоть какой-то путь из первой в конечную вершину
-        int mincapacity = 9999999999999;
+        int mincapacity = INT_MAX;
         int v = end;
         while (v != start) {//в этом цикле находим ребро с наименьшей пропускной способностью
             int u = path[v];
@@ -71,7 +71,6 @@ int main() {
             {0, 0, 0, 0, 8},
             {0, 0, 0, 0, 0},
     };
-
     int start = 0;
     int finish = 4;
     int maxFlow = Ford_Falkerson(graph, start, finish);
