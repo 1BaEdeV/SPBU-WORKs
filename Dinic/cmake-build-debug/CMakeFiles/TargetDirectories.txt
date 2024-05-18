@@ -1,3 +1,0 @@
-/home/eduard/Рабочий стол/AM-CP_PROG/SPBU-WORKs/Dinic/cmake-build-debug/CMakeFiles/Dinic.dir
-/home/eduard/Рабочий стол/AM-CP_PROG/SPBU-WORKs/Dinic/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/eduard/Рабочий стол/AM-CP_PROG/SPBU-WORKs/Dinic/cmake-build-debug/CMakeFiles/rebuild_cache.dir
