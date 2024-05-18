@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Dinic.dir/main.cpp.o -o Dinic 
