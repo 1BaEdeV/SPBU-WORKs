@@ -132,7 +132,7 @@ void HEncode(const string& text) {
 
     // Вывод кодов Хаффмана
     cout << "Huffman Codes: "<<endl;
-    for (const auto& pair : HCodes) {
+    for (auto& pair : HCodes) {
         cout << pair.first << ": " << pair.second <<"    hz:"<<hzmap[pair.first]<< endl;
     }
     cout<<endl;
